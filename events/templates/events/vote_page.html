@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-semibold mb-4">{{ event.name }}</h2>
+
+    {% if user_voted %}
+        <p class="text-green-500">✅ You have already voted for this event.</p>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {% for candidate in candidates %}
+                    <label class="block cursor-pointer p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition">
+                        <input type="radio" name="candidate" value="{{ candidate.id }}" class="hidden">
+                        <h3 class="text-lg font-semibold">{{ candidate.user.get_full_name }}</h3>
+                        <p>{{ candidate.bio }}</p>
+                    </label>
+                {% endfor %}
+            </div>
+            <button type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                Submit Vote
+            </button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

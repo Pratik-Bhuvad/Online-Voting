@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ event.name }}</h2>
+<p>{{ event.description }}</p>
+<p><strong>Start Date:</strong> {{ event.start_date }}</p>
+<p><strong>End Date:</strong> {{ event.end_date }}</p>
+<a href="{% url 'candidates' %}" class="text-green-500 hover:underline">View Candidates</a>
+{% endblock %}

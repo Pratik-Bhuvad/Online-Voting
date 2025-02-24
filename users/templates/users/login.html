@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
+        <div>
+            <h2 class="text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+                Welcome Back 👋
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+                New here?
+                <a href="{% url 'signup' %}" class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 transition">
+                    Create an account
+                </a>
+            </p>
+        </div>
+
+        <form class="mt-8 space-y-6" method="post">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <!-- Username or Email Field -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username or Email</label>
+                    <input id="username" name="username" type="text" autocomplete="username" required
+                        class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm shadow-sm">
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                        class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm shadow-sm">
+                </div>
+            </div>
+
+            <!-- Login Button -->
+            <button type="submit"
+                class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 shadow-md">
+                Login
+            </button>
+        </form>
+
+        <!-- Forgot Password & Social Login -->
+        <div class="text-center">
+            {% comment %} <a href="{% url 'password_reset' %}" class="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 transition"> {% endcomment %}
+                Forgot your password?
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

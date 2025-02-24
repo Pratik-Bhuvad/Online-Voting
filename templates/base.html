@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Voting System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .dark-mode {
+            @apply bg-gray-900 text-gray-100;
+        }
+        .dark-mode .navbar {
+            @apply bg-gray-800;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white text-gray-800 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
+
+    <!-- Navbar -->
+    <nav class="navbar flex justify-between items-center p-5 bg-gray-100 dark:bg-gray-800 shadow-md">
+        <a class="text-2xl font-bold text-blue-600 hover:text-blue-800" href="{% url 'home' %}">🎓 Voting System</a>
+        <div class="flex items-center space-x-6">
+            <a class="text-gray-700 dark:text-gray-300 hover:text-blue-500" href="{% url 'events' %}">Events</a>
+            <a class="text-gray-700 dark:text-gray-300 hover:text-blue-500" href="{% url 'about' %}">About Us</a>
+            <a class="text-gray-700 dark:text-gray-300 hover:text-blue-500" href="{% url 'contact' %}">Contact Us</a>
+            {% if user.is_authenticated %}
+                <a class="text-gray-700 dark:text-gray-300 hover:text-blue-500" href="{% url 'dashboard' %}">Dashboard</a>
+                <a class="text-red-600 dark:text-red-400 hover:text-red-800" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a class="text-green-600 dark:text-green-400 hover:text-green-800" href="{% url 'login' %}">Login</a>
+                <a class="text-green-600 dark:text-green-400 hover:text-green-800" href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+            <button id="theme-toggle" class="bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition">🌙 Toggle Mode</button>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    <main class="container mx-auto p-8">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="p-4 mb-4 rounded-lg shadow bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 dark:bg-gray-800 text-center py-4">
+        <p class="text-sm text-gray-600 dark:text-gray-400">© 2025 College Voting System. All rights reserved.</p>
+    </footer>
+
+    <!-- Dark/Light Mode Toggle Script -->
+    <script>
+        const toggleButton = document.getElementById('theme-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            toggleButton.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+        });
+    </script>
+
+</body>
+</html>
