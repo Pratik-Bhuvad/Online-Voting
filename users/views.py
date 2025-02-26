@@ -7,12 +7,19 @@ from .models import CustomUser
 from events.models import Event, Vote  # Assuming you have these models for events and votes
 
 def signup(request):
+    print("Signup request got")
     if request.method == 'POST':
+        print("Post request")
         form = SignUpForm(request.POST)
+        print("receive form")
         if form.is_valid():
+            print("Valid")
             form.save()
+            print("Form saved")
             messages.success(request, 'Account created successfully! Please log in.')
             return redirect('login')
+        else:
+            print(form.errors)
     else:
         form = SignUpForm()
     return render(request, 'users/signup.html', {'form': form})

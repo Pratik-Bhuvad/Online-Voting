@@ -3,6 +3,7 @@ from .models import Candidate
 
 def candidate_list(request):
     candidates = Candidate.objects.all()
+    print(candidates)
     return render(request, 'candidates/candidate_list.html', {'candidates': candidates})
 
 def candidate_detail(request, candidate_id):

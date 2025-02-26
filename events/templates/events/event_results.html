@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4">📢 Results for {{ event.name }}</h2>
+
+    {% if winner %}
+    <div class="bg-yellow-300 text-gray-900 p-4 rounded-lg shadow mb-6 text-center">
+        🏆 <strong>Winner:</strong> {{ winner.user.username }} with {{ winner.total_votes }} votes!
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for candidate in candidates %}
+        <div class="bg-gray-800 p-4 rounded-lg shadow-lg text-center">
+            <h3 class="text-xl font-semibold text-white">{{ candidate.user.username }}</h3>
+            <p class="text-gray-400">{{ candidate.profile_details }}</p>
+            <p class="text-green-500 font-bold text-lg mt-2">Votes: {{ candidate.total_votes }}</p>
+        </div>
+        {% empty %}
+        <p>No candidates found.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Results Chart Section -->
+    <div id="resultsSection" class="hidden mt-10 h-48">
+        <h3 class="text-lg font-semibold mb-4 text-center">📊 Voting Results:</h3>
+        <canvas id="resultsChart" height="60"></canvas>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, fetching results...');
+    const eventId = "{{ event.id }}";
+    console.log(eventId)
+    fetch(`/events/events/${eventId}/results/`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data received:', data);
+        const labels = data.results.map(r => r.name);
+        const votes = data.results.map(r => r.votes);
+
+        if (labels.length && votes.length) {
+            document.getElementById('resultsSection').classList.remove('hidden');
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+
+            // Destroy existing chart instance if exists
+            if (window.myChart instanceof Chart) {
+                window.myChart.destroy();
+            }
+
+            window.myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Votes',
+                        data: votes,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                        borderColor: 'rgba(255, 255, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { enabled: true }
+                    }
+                }
+            });
+        } else {
+            console.log("No data to show in chart.");
+        }
+    })
+    .catch(error => console.error('Error loading results:', error));
+});
+</script>
+
+{% endblock %}
