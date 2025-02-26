@@ -1,4 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-        
+{% load static %}
+
+<section class="bg-gray-900 text-gray-100 py-16">
+    <div class="container mx-auto px-6 lg:px-16">
+        <h1 class="text-5xl font-extrabold text-center mb-8 leading-tight">About Our Voting System</h1>
+        <p class="text-xl text-center text-gray-300 mb-12">
+            Our mission is to provide a secure, transparent, and user-friendly voting platform for college events.
+            Experience real-time updates, fair elections, and seamless participation like never before.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+                <h3 class="text-2xl font-semibold mb-4">🔒 Secure & Reliable</h3>
+                <p class="text-gray-400">Security is at the heart of our system. We use industry-standard encryption and multi-factor authentication to ensure your vote is safe.</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+                <h3 class="text-2xl font-semibold mb-4">⚡ Real-Time Updates</h3>
+                <p class="text-gray-400">Stay informed with live vote tracking and dynamic charts, ensuring transparency and trust in every election.</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+                <h3 class="text-2xl font-semibold mb-4">🌐 Accessible Everywhere</h3>
+                <p class="text-gray-400">Our platform is fully responsive, allowing you to vote and check results from any device, anytime, anywhere.</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+                <h3 class="text-2xl font-semibold mb-4">💡 Empowering Students</h3>
+                <p class="text-gray-400">We believe in the power of student voices. Our goal is to make voting simple, efficient, and meaningful for everyone.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-blue-600 py-16 text-white text-center">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold mb-4">Want to Know More?</h2>
+        <p class="text-xl mb-6">Get in touch with us for any questions or collaborations. We’re happy to help you shape your college community.</p>
+        <a href="{% url 'contact' %}" class="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-100 transition">Contact Us</a>
+    </div>
+</section>
+
 {% endblock %}
