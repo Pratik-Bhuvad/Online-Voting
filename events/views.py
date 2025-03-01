@@ -104,27 +104,53 @@ def vote_for_candidate(request, event_id, candidate_id):
     messages.success(request, f"You have successfully voted for {candidate.user.username} as {candidate.position}.")
     return redirect('events')
 
-from django.http import JsonResponse
+# from django.http import JsonResponse
 from django.db.models import Count
 
-@login_required
-def event_results(request, event_id):
-    event = get_object_or_404(Event, id=event_id)
-    candidates = Candidate.objects.filter(event=event).annotate(total_votes=Count('votes')).order_by('-total_votes')
+# @login_required
+# def event_results(request, event_id):
+#     event = get_object_or_404(Event, id=event_id)
+#     candidates = Candidate.objects.filter(event=event).annotate(total_votes=Count('votes')).order_by('-total_votes')
 
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # For AJAX request
-        data = []
-        for candidate in candidates:
-            data.append({
-                'name': candidate.user.username,
-                'votes': candidate.total_votes,
-                'position': candidate.position
-            })
-        return JsonResponse({'results': data})
+#     if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # For AJAX request
+#         data = []
+#         for candidate in candidates:
+#             data.append({
+#                 'name': candidate.user.username,
+#                 'votes': candidate.total_votes,
+#                 'position': candidate.position
+#             })
+#         return JsonResponse({'results': data})
     
-    winner = candidates.first() if candidates else None
-    return render(request, 'events/event_results.html', { 'event': event, 'candidates': candidates, 'winner': winner
-    })
+#     winner = candidates.first() if candidates else None
+#     return render(request, 'events/event_results.html', { 'event': event, 'candidates': candidates, 'winner': winner
+#     })
 
 
     # return render(request, 'events/event_results.html', {'event': event, 'candidates': candidates})
+
+from django.shortcuts import render
+from django.http import JsonResponse
+# from .models import Candidate, Event
+
+def event_results(request, event_id):
+    event = Event.objects.get(id=event_id)
+    
+    # Grouping results by position
+    results_by_position = {}
+    
+    candidates = Candidate.objects.filter(event=event).annotate(total_votes=Count('votes')).order_by('-total_votes')
+    for candidate in candidates:
+        position = candidate.position  # Assuming there's a 'position' field
+        if position not in results_by_position:
+            results_by_position[position] = []
+        results_by_position[position].append({
+            "name": candidate.user.username,
+            "description": candidate.profile_details,
+            "votes": candidate.total_votes
+        })
+    
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({"results": results_by_position})
+
+    return render(request, "events/event_results.html", {"event": event, "candidates": candidates})

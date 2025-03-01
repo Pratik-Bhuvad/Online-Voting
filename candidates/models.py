@@ -14,7 +14,8 @@ class Candidate(models.Model):
         ('pr_head', 'PR Head'),
         ('ond_head', 'OND Head'),
         ('finance_head', 'Finance Head'),
-    ]
+        ('digital_head', 'Digital Head'),
+            ]
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

@@ -20,3 +20,6 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.site_header = "Online Voting System Admin"
+admin.site.site_title = "Voting System"
+admin.site.index_title = "Welcome to the Admin Dashboard"
